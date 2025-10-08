@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dawnload from "../assets/icon-downloads.png";
 import ratinf from "../assets/icon-ratings.png";
 import useProducts from '../Hook/Hook';
 import scarc from '../assets/scar.png'
 import ErrorApp from '../Components/Error/ErrorApp';
+import { CircleLoader } from 'react-spinners';
+import { Link } from 'react-router';
 
 const Apps = () => {
-    const { products, Loading } = useProducts();
+    const { products } = useProducts();
+    const [load, setLoad] = useState(true);
+    
     const [search, setSearch] = useState("");
     const term = search.trim().toLowerCase();
     
@@ -16,6 +20,26 @@ const Apps = () => {
             product.companyName.toLowerCase().includes(term)
           )
         : products;
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoad(false);
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (load) {
+        return (
+            <div className="min-h-screen bg-[#f5f5f5] flex justify-center items-center">
+                <CircleLoader 
+                    color="#9560ee" 
+                    size={80} 
+                    loading={load} 
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#f5f5f5] py-8">
@@ -30,14 +54,14 @@ const Apps = () => {
                 <div className='flex flex-col sm:flex-row justify-between items-center gap-4 mb-8'>
                     <h1 className='text-xl font-semibold'> ({filteredProducts.length}) Apps Found</h1>
 
-                    <label className="input input-bordered flex items-center gap-2 w-full sm:w-80">
+                    <label className="input flex items-center gap-2 w-full sm:w-80">
                         <img src={scarc} alt="search icon" className="w-4 h-4" />
                         <input 
                             value={search}
                             onChange={e => setSearch(e.target.value)} 
                             type="text" 
                             placeholder="Search Apps" 
-                            className="grow"
+                            className="grow" 
                         />
                     </label>
                 </div>
@@ -45,45 +69,48 @@ const Apps = () => {
                 {filteredProducts.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filteredProducts.map(product => (
-                            <div
-                                key={product.id}
-                                className="flex flex-col justify-start gap-4 w-full h-[350px] p-4 bg-white rounded-[8px] border border-gray-200 hover:scale-105 transform transition-all duration-300 hover:shadow-lg"
+                            <Link 
+                                key={product.id} 
+                                to={`/app/${product.id}`}
+                                className="block"
                             >
-                                <div className="w-full h-[200px] bg-gray-100 rounded-[4px] overflow-hidden flex items-center justify-center">
-                                    <img 
-                                        className="w-full h-full object-cover" 
-                                        src={product.image} 
-                                        alt={product.title} 
-                                    />
-                                </div>
-
-                                <h1 className="text-xl font-bold text-gray-800 line-clamp-1">{product.title}</h1>
-                                <p className="text-sm text-gray-600 -mt-2">{product.companyName}</p>
-
-                                <div className="flex items-center justify-between mt-auto">
-                                    <div className="flex w-fit h-[40px] rounded-2xl bg-[#f1f5e8] justify-center items-center px-3">
-                                        <p className="text-[16px] font-bold flex items-center gap-2 text-[#1d7655]">
-                                            <img
-                                                className="w-[20px] h-[20px]"
-                                                src={dawnload}
-                                                alt="download icon"
-                                            />
-                                            {product.downloads}
-                                        </p>
+                                <div className="flex flex-col justify-start gap-4 w-full h-[350px] p-4 bg-white rounded-[8px] border border-gray-200 hover:scale-105 transform transition-all duration-300 hover:shadow-lg cursor-pointer">
+                                    <div className="w-full h-[200px] bg-gray-100 rounded-[4px] overflow-hidden flex items-center justify-center">
+                                        <img 
+                                            className="w-full h-full object-cover" 
+                                            src={product.image} 
+                                            alt={product.title} 
+                                        />
                                     </div>
 
-                                    <div className="flex w-fit h-[40px] rounded-2xl bg-[#fff0e1] justify-center items-center px-3">
-                                        <p className="text-[16px] font-bold flex items-center gap-2 text-[#ff8c00]">
-                                            <img className="w-[20px] h-[20px]" src={ratinf} alt="rating icon" />
-                                            {product.ratingAvg}
-                                        </p>
+                                    <h1 className="text-xl font-bold text-gray-800 line-clamp-1">{product.title}</h1>
+                                    <p className="text-sm text-gray-600 -mt-2">{product.companyName}</p>
+
+                                    <div className="flex items-center justify-between mt-auto">
+                                        <div className="flex w-fit h-[40px] rounded-2xl bg-[#f1f5e8] justify-center items-center px-3">
+                                            <p className="text-[16px] font-bold flex items-center gap-2 text-[#1d7655]">
+                                                <img
+                                                    className="w-[20px] h-[20px]"
+                                                    src={dawnload}
+                                                    alt="download icon"
+                                                />
+                                                {product.downloads}
+                                            </p>
+                                        </div>
+
+                                        <div className="flex w-fit h-[40px] rounded-2xl bg-[#fff0e1] justify-center items-center px-3">
+                                            <p className="text-[16px] font-bold flex items-center gap-2 text-[#ff8c00]">
+                                                <img className="w-[20px] h-[20px]" src={ratinf} alt="rating icon" />
+                                                {product.ratingAvg}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 ) : (
-                   <ErrorApp searchTerm={search} onClearSearch={() => setSearch("")} />
+                   <ErrorApp></ErrorApp>
                 )}
             </div> 
         </div>

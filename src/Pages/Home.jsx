@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import playstore from "../assets/gogleplay.png";
 import applestore from "../assets/appleplay.png";
 import hero from '../assets/hero.png'
 import { Link } from "react-router";
 import Allproducts from "./Allproducts";
 import useProducts from "../Hook/Hook";
+import { CircleLoader } from "react-spinners";
 
 const Home = () => {
-    const { products, Loading ,} = useProducts();
+    const { products } = useProducts();
+    const [load, setLoad] = useState(true);
     
     const productsSlice = products.slice(0, 8);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoad(false);
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (load) {
+        return (
+            <div className="min-h-screen bg-[#f5f5f5] flex justify-center items-center">
+                <CircleLoader 
+                    color="#9560ee" 
+                    size={80} 
+                    loading={load} 
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#f5f5f5]">
@@ -22,7 +44,7 @@ const Home = () => {
                         </span>
                     </h1>
 
-                    <p className="mx-auto text-base sm:text-lg md:text-xl lg:text-2xl max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-[1150px] mt-4 sm:mt-6 px-2 sm:px-4 leading-relaxed">
+                    <p className="mx-auto text-base sm:text-lg md:text-xl lg:text-2xl max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-[1150px] mt-4 sm:mt-6 px-2 sm:px-4 leading-relaxed text-[#627382]">
                         At HERO.IO, we craft innovative apps designed to make everyday life
                         simpler, smarter, and more exciting. Our goal is to turn your ideas
                         into digital experiences that truly make an impact.
@@ -95,7 +117,7 @@ const Home = () => {
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
                     Trending Apps
                 </h1>
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-md sm:max-w-lg md:max-w-xl mx-auto px-4">
+                <p className="text-base sm:text-lg md:text-xl text-[#627382] max-w-md sm:max-w-lg md:max-w-xl mx-auto px-4">
                     Explore All Trending Apps on the Market developed by us
                 </p>
             </div>
