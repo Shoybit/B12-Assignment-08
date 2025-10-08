@@ -4,6 +4,7 @@ import Installation from "../Pages/Installation";
 import Apps from "../Pages/Apps";
 import Error from '../Components/Error/Error';
 import MainLayout from "../Layouts/MainLayout";
+import ErrorApp from "../Components/Error/ErrorApp";
 
 const router = createBrowserRouter([
   {
