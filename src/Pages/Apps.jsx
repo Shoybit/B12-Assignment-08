@@ -10,6 +10,8 @@ import { Link } from 'react-router';
 const Apps = () => {
     const { products } = useProducts();
     const [load, setLoad] = useState(true);
+      const [searchLoad, setSearchLoad] = useState(false);
+
     
     const [search, setSearch] = useState("");
     const term = search.trim().toLowerCase();
@@ -24,23 +26,30 @@ const Apps = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoad(false);
-        }, 2000);
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, []);
 
-    if (load) {
-        return (
-            <div className="min-h-screen bg-[#f5f5f5] flex justify-center items-center">
-                <CircleLoader 
-                    color="#9560ee" 
-                    size={80} 
-                    loading={load} 
-                />
-            </div>
-        );
-    }
+  useEffect(() => {
+    if (term) {
+      setSearchLoad(true);
+      const timer = setTimeout(() => {
+        setSearchLoad(false);
+      }, 500); 
 
+      return () => clearTimeout(timer);
+    }
+  }, [term]); 
+
+ 
+  if (load) {
+    return (
+      <div className="min-h-screen bg-[#f5f5f5] flex justify-center items-center">
+        <CircleLoader color="#9560ee" size={80} loading={load} />
+      </div>
+    );
+  }
     return (
         <div className="min-h-screen bg-[#f5f5f5] py-8">
             <div className="max-w-11/12 mx-auto px-4">
@@ -65,7 +74,13 @@ const Apps = () => {
                         />
                     </label>
                 </div>
+                {searchLoad ? (
+          <div className="min-h-[200px] flex justify-center items-center">
+            <CircleLoader color="#9560ee" size={50} loading={searchLoad} />
+          </div>
+        ) : (
 
+            <div>
                 {filteredProducts.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filteredProducts.map(product => (
@@ -112,6 +127,8 @@ const Apps = () => {
                 ) : (
                    <ErrorApp></ErrorApp>
                 )}
+              </div>
+              )}
             </div> 
         </div>
     );
