@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import logo from "../../assets/logo.png";
 import github from "../../assets/fi_2111432.png";
 
@@ -27,26 +27,38 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-30 p-2 shadow"
             >
-              <Link
-                className="hover:bg-gradient-to-r hover:from-[#632EE3] hover:to-[#9F62F2] hover:text-white w-[70px]  mx-auto text-center rounded-2xl transition-all duration-300"
+              <NavLink
+                className={({ isActive }) => 
+                  isActive 
+                    ? "text-[#632EE3] border-b-2 border-[#632EE3] pb-1 transition-all duration-300 font-medium" 
+                    : "text-gray-700 hover:text-[#632EE3] transition-all duration-300 border-b-2 border-transparent hover:border-[#632EE3] pb-1"
+                }
                 to="/"
               >
                 <li>Home</li>
-              </Link>
-              <Link
-                className="hover:bg-gradient-to-r hover:from-[#632EE3] hover:to-[#9F62F2] hover:text-white w-[70px] mx-auto text-center rounded-2xl transition-all duration-300"
+              </NavLink>
+              <NavLink
+                className={({ isActive }) => 
+                  isActive 
+                    ? "text-[#632EE3] border-b-2 border-[#632EE3] pb-1 transition-all duration-300 font-medium" 
+                    : "text-gray-700 hover:text-[#632EE3] transition-all duration-300 border-b-2 border-transparent hover:border-[#632EE3] pb-1"
+                }
                 to="/Apps"
               >
                 <li>Apps</li>
-              </Link>
-              <Link
-                className="hover:bg-gradient-to-r hover:from-[#632EE3] hover:to-[#9F62F2] hover:text-white w-[70px] mx-auto text-center rounded-2xl transition-all duration-300"
+              </NavLink>
+              <NavLink
+                className={({ isActive }) => 
+                  isActive 
+                    ? "text-[#632EE3] border-b-2 border-[#632EE3] pb-1 transition-all duration-300 font-medium" 
+                    : "text-gray-700 hover:text-[#632EE3] transition-all duration-300 border-b-2 border-transparent hover:border-[#632EE3] pb-1"
+                }
                 to="/Installation"
               >
                 <li>Installation</li>
-              </Link>
+              </NavLink>
             </ul>
           </div>
           <Link to="/">
@@ -65,24 +77,36 @@ const Navbar = () => {
 
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-7">
-            <Link
-              className="hover:bg-gradient-to-r hover:from-[#632EE3] hover:to-[#9F62F2] hover:text-white w-[70px] mx-auto text-center rounded-2xl transition-all duration-300"
+            <NavLink
+              className={({ isActive }) => 
+                isActive 
+                  ? "text-[#632EE3] border-b-2 border-[#632EE3] pb-1 transition-all duration-300 font-medium" 
+                  : "text-gray-700 hover:text-[#632EE3] transition-all duration-300 border-b-2 border-transparent hover:border-[#632EE3] pb-1"
+              }
               to="/"
             >
               <li>Home</li>
-            </Link>
-            <Link
-              className="hover:bg-gradient-to-r hover:from-[#632EE3] hover:to-[#9F62F2] hover:text-white w-[70px] mx-auto text-center rounded-2xl transition-all duration-300"
+            </NavLink>
+            <NavLink
+              className={({ isActive }) => 
+                isActive 
+                  ? "text-[#632EE3] border-b-2 border-[#632EE3] pb-1 transition-all duration-300 font-medium" 
+                  : "text-gray-700 hover:text-[#632EE3] transition-all duration-300 border-b-2 border-transparent hover:border-[#632EE3] pb-1"
+              }
               to="/Apps"
             >
               <li>Apps</li>
-            </Link>
-            <Link
-              className="hover:bg-gradient-to-r hover:from-[#632EE3] hover:to-[#9F62F2] hover:text-white w-[100px] mx-auto text-center rounded-2xl transition-all duration-300"
+            </NavLink>
+            <NavLink
+              className={({ isActive }) => 
+                isActive 
+                  ? "text-[#632EE3] border-b-2 border-[#632EE3] pb-1 transition-all duration-300 font-medium" 
+                  : "text-gray-700 hover:text-[#632EE3] transition-all duration-300 border-b-2 border-transparent hover:border-[#632EE3] pb-1"
+              }
               to="/Installation"
             >
               <li>Installation</li>
-            </Link>
+            </NavLink>
           </ul>
         </div>
 
