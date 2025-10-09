@@ -78,7 +78,7 @@ const Installation = () => {
       </div>
 
       <ToastContainer />
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-11/12 mx-auto px-4">
         <div className="p-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800">
@@ -109,13 +109,12 @@ const Installation = () => {
                       className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-lg"
                     />
                   </div>
-                  <div className="flex-1 ml-9">
-                    <div className="text-center md:text-left">
-                      <h3 className="text-xl font-bold text-gray-800">
+                  <div className="flex-1">
+                    <div className="text-center md:text-left ">
+                      <h3 className="text-xl font-bold text-gray-800 ">
                         {app.title}
                       </h3>
-                      <p className="text-gray-600 mb-1">{app.companyName}</p>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap mt-8">
                         <div className="flex">
                           <img className="w-[20px] h-[20px]" src={dawnload} alt="" />
                           <span className="inline-block text-sm px-3 py-1">
