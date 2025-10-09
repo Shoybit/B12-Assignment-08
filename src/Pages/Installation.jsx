@@ -80,8 +80,8 @@ const Installation = () => {
       <ToastContainer />
       <div className="max-w-11/12 mx-auto px-4">
         <div className="p-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
+         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 ">
               Your Apps ({installedProducts.length})
             </h2>
             <select 
