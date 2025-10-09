@@ -29,14 +29,14 @@ const router = createBrowserRouter([
         path: "/installation",
         Component: Installation,
       },
-        {
+      {
         path: "/app/:id",  
         Component: AppsDatails,
       },
       {
         path: "*",
         element: <Error />,
-      },
+      }
     ]
   },
 ]);

@@ -6,6 +6,7 @@ import scarc from '../assets/scar.png'
 import ErrorApp from '../Components/Error/ErrorApp';
 import { CircleLoader } from 'react-spinners';
 import { Link } from 'react-router';
+import Loader from '../Components/Loader';
 
 const Apps = () => {
     const { products } = useProducts();
@@ -39,17 +40,16 @@ const Apps = () => {
       }, 500); 
 
       return () => clearTimeout(timer);
+    } else{
+        setSearchLoad(false) ;
     }
   }, [term]); 
 
- 
-  if (load) {
-    return (
-      <div className="min-h-screen bg-[#f5f5f5] flex justify-center items-center">
-        <CircleLoader color="#9560ee" size={80} loading={load} />
-      </div>
-    );
-  }
+
+    if (load) {
+        return <Loader></Loader> 
+    }
+
     return (
         <div className="min-h-screen bg-[#f5f5f5] py-8">
             <div className="max-w-11/12 mx-auto px-4">

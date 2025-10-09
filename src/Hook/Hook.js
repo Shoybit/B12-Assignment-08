@@ -1,19 +1,26 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-const useProducts = () =>{
-const [products,setProducts] = useState([])
-const [error,setError] = useState(null)
+const useProducts = () => {
+    const [products, setProducts] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
+    useEffect(() => {
+        setLoading(true)
+        axios('../Apps.json')
+            .then(data => {
+                setProducts(data.data)
+                setLoading(false)
+            })
+            .catch(err => {
+                setError(err)
+                setLoading(false)
+            })
 
-useEffect( () => {
-axios('../Apps.json')
-.then(data => setProducts(data.data))
-.catch(err => setError(err))
+    }, [])
 
-}, [] )
-
-return {products,error}
+    return { products, loading, error }
 }
 
-export default useProducts 
+export default useProducts

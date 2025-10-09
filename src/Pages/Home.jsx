@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import Allproducts from "./Allproducts";
 import useProducts from "../Hook/Hook";
 import { CircleLoader } from "react-spinners";
+import Loader from "../Components/Loader";
 
 const Home = () => {
     const { products } = useProducts();
@@ -21,17 +22,10 @@ const Home = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    if (load) {
-        return (
-            <div className="min-h-screen bg-[#f5f5f5] flex justify-center items-center">
-                <CircleLoader 
-                    color="#9560ee" 
-                    size={80} 
-                    loading={load} 
-                />
-            </div>
-        );
+        if (load) {
+        return <Loader></Loader>
     }
+    
 
     return (
         <div className="min-h-screen bg-[#f5f5f5]">

@@ -6,42 +6,61 @@ import dawnload from '../assets/icon-downloads.png'
 import reting from '../assets/icon-ratings.png'
 import review from '../assets/icon-review.png'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loader from '../Components/Loader';
+import ErrorApp from '../Components/Error/ErrorApp';
 
 const AppsDetails = () => {
     const { id } = useParams();
     const { products } = useProducts();
     const [load, setLoad] = useState(true);
+    const [isInstalled, setIsInstalled] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoad(false);
         }, 1000);
 
-        return () => clearTimeout(timer);
-    }, []);
+        const installedApps = JSON.parse(localStorage.getItem('installedApps') || '[]');
+        if (installedApps.includes(parseInt(id))) {
+            setIsInstalled(true);
+        }
 
-    if (load) {
-        return (
-            <div className="min-h-screen bg-[#f5f5f5] flex justify-center items-center">
-                <CircleLoader 
-                    color="#9560ee" 
-                    size={80} 
-                    loading={load} 
-                />
-            </div>
-        );
-    }
+        return () => clearTimeout(timer);
+    }, [id]);
 
     const product = products.find(p => p.id === parseInt(id));
     console.log('Found product:', product);
 
+    const handleInstall = () => {
+        if (!product) return;
+        
+        const installedApps = JSON.parse(localStorage.getItem('installedApps') || '[]');
+        if (!installedApps.includes(product.id)) {
+            installedApps.push(product.id);
+            localStorage.setItem('installedApps', JSON.stringify(installedApps));
+        }
+
+        toast.success(`${product.title} installed successfully!`, {
+            position: "top-right",
+            autoClose: 3000,
+        });
+        
+        setIsInstalled(true);
+    };
+
+    if (load) {
+        return <Loader></Loader> 
+    }
+
     if (!product) {
         return (
-            <div className='max-w-11/12 mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 lg:pt-15'>
-                <div className="text-center">
-                    <p>ID: {id}</p>
-                    <p>{products.map(p => p.id).join(', ')}</p>
-                </div>
+            <div className='min-h-screen bg-[#f5f5f5] flex items-center justify-center'>
+                <ErrorApp>
+                    message={`Application with ID ${id} not found.`}
+                    onReset={() => window.history.back()}
+                </ErrorApp> 
             </div>
         );
     }
@@ -55,11 +74,14 @@ const AppsDetails = () => {
 
     return (
         <div className='bg-[#f5f5f5]'>
+
+            <ToastContainer />
+            
             <div className='max-w-11/12 mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 lg:pt-15 min-h-screen'>
                 <div className="rounded-lg overflow-hidden">
                     
-                    <div className="flex flex-col md:flex-row p-6 border-b border-gray-300">
-                        <div className="md:w-1/3 flex justify-center md:justify-start mb-6 md:mb-0 pb-6 md:pb-0 md:pr-6">
+                    <div className="flex flex-col md:flex-row gap-1 p-6 border-b border-gray-300">
+                        <div className="md:w-1/5 flex justify-center md:justify-start mb-6 md:mb-0 pb-6 md:pb-0 md:pr-0 ">
                             <img 
                                 src={image} 
                                 alt={title}
@@ -67,12 +89,12 @@ const AppsDetails = () => {
                             />
                         </div>
 
-                        <div className="md:w-2/3 md:pl-8">
+                        <div className="md:w-4/5 md:pl-6">
                             <h1 className="text-3xl font-bold text-gray-800  pb-2">{title}</h1>
                            
                             <p className="text-lg text-[#6e38e6] mb-5 mt-1"><span className='text-[#696b6c]'>Developed by</span> {companyName}</p>
                             
-                            <p className='border-b border-gray-300  mb-2'></p>
+                           <p className='border-b w-full text-[#d1d5dc] '></p>
 
                             <div className="flex items-center gap-15 mb-6 mt-5">
                                 <div className="flex flex-col  gap-1">
@@ -94,8 +116,23 @@ const AppsDetails = () => {
                                 </div>
                             </div>
 
-                            <button className="bg-[#00d390] hover:bg-[#22a57c] text-white  py-3 px-6 rounded-lg mb-6 transition ">
-                                Install Now ({mb})
+                            <button 
+                                onClick={handleInstall}
+                                disabled={isInstalled}
+                                className={`${
+                                    isInstalled 
+                                        ? 'bg-[#22a57c] cursor-not-allowed' 
+                                        : 'bg-[#00d390] hover:bg-[#22a57c]'
+                                } text-white py-3 px-6 rounded-lg mb-6 transition duration-300 flex items-center justify-center gap-2`}
+                            >
+                                {isInstalled ? (
+                                    <>
+
+                                        Installed
+                                    </>
+                                ) : (
+                                    `Install Now (${mb})`
+                                )}
                             </button>
                         </div>
                     </div>
